@@ -22,7 +22,13 @@ const (
 )
 
 var keywords = map[string]struct{}{
-	"defvar": {},
+	"define": {},
+	"lambda": {},
+	"let":    {},
+	"let*":   {},
+	"letrec": {},
+	"if":     {},
+	"begin":  {},
 }
 
 type Scanner struct {
@@ -215,5 +221,5 @@ func (s *Scanner) readRune() (rune, error) {
 
 func isAllowedSymbol(r rune) bool {
 	var disabledSymbols = [...]rune{';'}
-	return unicode.IsSymbol(r) || unicode.IsPunct(r) && r != ';' && !slices.Contains(disabledSymbols[0:], r)
+	return unicode.IsSymbol(r) || unicode.IsPunct(r) && !slices.Contains(disabledSymbols[0:], r)
 }

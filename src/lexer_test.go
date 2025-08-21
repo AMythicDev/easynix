@@ -118,23 +118,25 @@ func TestIdents(t *testing.T) {
 func TestKeywords(t *testing.T) {
 	is := is.New(t)
 
-	s := strings.NewReader("defvar")
-	scanner := NewScanner(s)
-	tok, err := scanner.readToken()
-	is.NoErr(err)
-	is.Equal(tok.ttype, Keyword)
-	is.Equal(tok.word, "defvar")
+	for kw, _ := range keywords {
+		s := strings.NewReader(kw)
+		scanner := NewScanner(s)
+		tok, err := scanner.readToken()
+		is.NoErr(err)
+		is.Equal(tok.ttype, Keyword)
+		is.Equal(tok.word, kw)
+	}
 }
 
 func TestStatment(t *testing.T) {
 	is := is.New(t)
 
-	s := strings.NewReader("(defvar x 5)")
+	s := strings.NewReader("(define x 5)")
 	scanner := NewScanner(s)
 
 	tokens := [...]Token{
 		{ttype: OpenParen, line: 1, col: 1},
-		{ttype: Keyword, line: 1, col: 2, word: "defvar"},
+		{ttype: Keyword, line: 1, col: 2, word: "define"},
 		{ttype: Ident, line: 1, col: 9, word: "x"},
 		{ttype: Numeric, line: 1, col: 11, word: "5"},
 		{ttype: CloseParen, line: 1, col: 12},
